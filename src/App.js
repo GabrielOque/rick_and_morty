@@ -1,25 +1,59 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
 
-function App() {
+import Navbar from "./components/Navbar";
+import Card from "./components/Card";
+import Pagination from "./Pagination";
+
+const App = () => {
+  const urlInitial = "https://rickandmortyapi.com/api/character";
+
+  const [results, setResults] = useState([]);
+  const [otherPage, setOtherPage] = useState({});
+
+  const characters = (url) => {
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setResults(data.results);
+        setOtherPage(data.info);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const onPrev = () => {
+    characters(otherPage.prev);
+  };
+
+  const onNext = () => {
+    characters(otherPage.next);
+  };
+
+  useEffect(() => {
+    characters(urlInitial);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar brand="rick and morty" />
+      <Pagination
+        onPrev={onPrev}
+        onNext={onNext}
+        prev={otherPage.prev}
+        next={otherPage.next}
+      />
+      <div className="flex justify-center w-full">
+        <div className="flex flex-wrap justify-between w-2/3">
+          <Card results={results} />
+        </div>
+      </div>
+      <Pagination
+        onPrev={onPrev}
+        onNext={onNext}
+        prev={otherPage.prev}
+        next={otherPage.next}
+      />
+    </>
   );
-}
+};
 
 export default App;
