@@ -34,7 +34,7 @@ const App = () => {
 
   return (
     <>
-      <Navbar brand="rick and morty" />
+      <Navbar brand="rick and morty by @Gabriel Oquendo" />
       <Pagination
         onPrev={onPrev}
         onNext={onNext}
