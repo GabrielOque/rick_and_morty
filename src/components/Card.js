@@ -2,7 +2,7 @@ const Card = ({ results }) => {
   return (
     <>
       {results.map((items) => (
-        <div key={items.id} className="p-1 mb-4 bg-blue-200">
+        <div key={items.id} className="p-2 mb-4 bg-blue-200 rounded-xl">
           <img src={items.image} alt="" />
           <p className="pt-1 font-bold">Name: {items.name}</p>
           <hr />

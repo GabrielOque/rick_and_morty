@@ -42,7 +42,7 @@ const App = () => {
         next={otherPage.next}
       />
       <div className="flex justify-center w-full">
-        <div className="flex flex-wrap justify-between w-2/3">
+        <div className="flex flex-wrap justify-around w-11/12">
           <Card results={results} />
         </div>
       </div>
