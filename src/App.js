@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import React, { useEffect, useState } from "react";
 
 import Navbar from "./components/Navbar";
@@ -11,13 +13,16 @@ const App = () => {
   const [otherPage, setOtherPage] = useState({});
 
   const characters = (url) => {
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setResults(data.results);
-        setOtherPage(data.info);
+    axios
+      .get(url)
+      .then((response) => {
+        setResults(response.data.results);
+        setOtherPage(response.data.info);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        // handle error
+        console.log(error);
+      });
   };
 
   const onPrev = () => {
@@ -27,10 +32,23 @@ const App = () => {
   const onNext = () => {
     characters(otherPage.next);
   };
-
   useEffect(() => {
     characters(urlInitial);
   }, []);
+
+  const handleDowload = (urlImage) => {
+    fetch(urlImage)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "imagen.jpg");
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+      });
+  };
 
   return (
     <>
@@ -43,7 +61,7 @@ const App = () => {
       />
       <div className="flex justify-center w-full">
         <div className="flex flex-wrap justify-around w-11/12">
-          <Card results={results} />
+          <Card results={results} handleDowload={handleDowload} />
         </div>
       </div>
       <Pagination
