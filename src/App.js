@@ -18,10 +18,11 @@ const App = () => {
       .then((response) => {
         setResults(response.data.results);
         setOtherPage(response.data.info);
+        console.log(response.data.results);
       })
       .catch((error) => {
         // handle error
-        console.log(error);
+        console.error(error);
       });
   };
 
